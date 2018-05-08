@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchPosts } from '../../modules/actions';
 import _ from 'lodash';
+import { Link } from 'react-router-dom';
 
 class PostIndex extends Component {
   componentDidMount() {
@@ -10,9 +11,11 @@ class PostIndex extends Component {
   renderPosts() {
     return _.map(this.props.posts, posts => {
       return (
-        <li key={posts.id} className="list-group-item">
+        <Link to={`/posts/${posts.id}`} key={posts.id} >
+        <li className="list-group-item">
           {posts.title}
         </li>
+        </Link>
       );
     });
   }
@@ -21,12 +24,20 @@ class PostIndex extends Component {
     console.log(this.props.posts);
 
     if (this.props.posts == null) {
-      return <p>Vacio</p>;
+      return <p>Conectando...</p>;
     }
 
     return (
       <div>
-        <ul>{this.renderPosts()}</ul>
+          <div className="text-xs-right pull-right">
+            <Link to="/posts/new" className="btn btn-primary">
+                Agregar un post
+            </Link>
+          </div>
+          <h3>Posts</h3>
+        <ul className="list-group">
+            {this.renderPosts()}
+        </ul>
       </div>
     );
   }
